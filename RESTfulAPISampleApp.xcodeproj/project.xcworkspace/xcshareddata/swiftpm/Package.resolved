@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "DependencyRegistry",
+        "repositoryURL": "https://github.com/saddamakhtar88/DependencyRegistry",
+        "state": {
+          "branch": null,
+          "revision": "417c9b26a0024aa3ddda8c9f1eec18617ad0a1c7",
+          "version": "1.0.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
