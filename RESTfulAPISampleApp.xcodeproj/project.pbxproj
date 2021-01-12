@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		403702CF25ADAF6900EA2E07 /* NetworkResponseHandlerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403702CE25ADAF6900EA2E07 /* NetworkResponseHandlerMock.swift */; };
+		4081441925AD69AC00724F12 /* NetworkRouterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4081441825AD69AC00724F12 /* NetworkRouterMock.swift */; };
 		40F5F5F925AC948E006D354B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F5F5F825AC948E006D354B /* AppDelegate.swift */; };
 		40F5F5FD25AC948E006D354B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F5F5FC25AC948E006D354B /* ViewController.swift */; };
 		40F5F60025AC948E006D354B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 40F5F5FE25AC948E006D354B /* Main.storyboard */; };
 		40F5F60225AC9492006D354B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40F5F60125AC9492006D354B /* Assets.xcassets */; };
 		40F5F60525AC9492006D354B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 40F5F60325AC9492006D354B /* LaunchScreen.storyboard */; };
-		40F5F61025AC9492006D354B /* RESTfulAPISampleAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F5F60F25AC9492006D354B /* RESTfulAPISampleAppTests.swift */; };
+		40F5F61025AC9492006D354B /* HTTPNetworkRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F5F60F25AC9492006D354B /* HTTPNetworkRouterTests.swift */; };
 		40F5F61B25AC9492006D354B /* RESTfulAPISampleAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F5F61A25AC9492006D354B /* RESTfulAPISampleAppUITests.swift */; };
 		40F5F62D25AC94C8006D354B /* DependencyRegistry in Frameworks */ = {isa = PBXBuildFile; productRef = 40F5F62C25AC94C8006D354B /* DependencyRegistry */; };
 		40F5F64F25AC953C006D354B /* ImageSearchResultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F5F63925AC953C006D354B /* ImageSearchResultModel.swift */; };
@@ -49,6 +51,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		403702CE25ADAF6900EA2E07 /* NetworkResponseHandlerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkResponseHandlerMock.swift; sourceTree = "<group>"; };
+		4081441825AD69AC00724F12 /* NetworkRouterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRouterMock.swift; sourceTree = "<group>"; };
 		40F5F5F525AC948E006D354B /* RESTfulAPISampleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RESTfulAPISampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		40F5F5F825AC948E006D354B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		40F5F5FC25AC948E006D354B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -57,7 +61,7 @@
 		40F5F60425AC9492006D354B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		40F5F60625AC9492006D354B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		40F5F60B25AC9492006D354B /* RESTfulAPISampleAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RESTfulAPISampleAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		40F5F60F25AC9492006D354B /* RESTfulAPISampleAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RESTfulAPISampleAppTests.swift; sourceTree = "<group>"; };
+		40F5F60F25AC9492006D354B /* HTTPNetworkRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPNetworkRouterTests.swift; sourceTree = "<group>"; };
 		40F5F61125AC9492006D354B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		40F5F61625AC9492006D354B /* RESTfulAPISampleAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RESTfulAPISampleAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		40F5F61A25AC9492006D354B /* RESTfulAPISampleAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RESTfulAPISampleAppUITests.swift; sourceTree = "<group>"; };
@@ -104,6 +108,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4081441D25AD69B500724F12 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				4081441825AD69AC00724F12 /* NetworkRouterMock.swift */,
+				403702CE25ADAF6900EA2E07 /* NetworkResponseHandlerMock.swift */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
 		40F5F5EC25AC948E006D354B = {
 			isa = PBXGroup;
 			children = (
@@ -141,7 +154,8 @@
 		40F5F60E25AC9492006D354B /* RESTfulAPISampleAppTests */ = {
 			isa = PBXGroup;
 			children = (
-				40F5F60F25AC9492006D354B /* RESTfulAPISampleAppTests.swift */,
+				4081441D25AD69B500724F12 /* Mock */,
+				40F5F60F25AC9492006D354B /* HTTPNetworkRouterTests.swift */,
 				40F5F61125AC9492006D354B /* Info.plist */,
 			);
 			path = RESTfulAPISampleAppTests;
@@ -408,7 +422,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				40F5F61025AC9492006D354B /* RESTfulAPISampleAppTests.swift in Sources */,
+				40F5F61025AC9492006D354B /* HTTPNetworkRouterTests.swift in Sources */,
+				4081441925AD69AC00724F12 /* NetworkRouterMock.swift in Sources */,
+				403702CF25ADAF6900EA2E07 /* NetworkResponseHandlerMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
