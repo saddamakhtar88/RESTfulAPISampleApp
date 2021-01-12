@@ -10,5 +10,5 @@ import Foundation
 protocol ImageSearchService {
     func getImages(for searchKeyword: String,
                    completion: @escaping (_ result: ImageSearchResultModel?,
-                                _ error: String?) -> Void) -> Cancellable
+                                _ error: Error?) -> Void) -> Cancellable
 }

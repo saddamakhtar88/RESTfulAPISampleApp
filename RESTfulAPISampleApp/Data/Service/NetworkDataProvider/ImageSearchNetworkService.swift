@@ -20,22 +20,22 @@ struct ImageSearchNetworkService: ImageSearchService {
     
     func getImages(for searchKeyword: String,
                    completion: @escaping (_ result: ImageSearchResultModel?,
-                                          _ error: String?) -> Void) -> Cancellable {
+                                          _ error: Error?) -> Void) -> Cancellable {
         let networkRouter = _networkRouter
         let endpoint = ImageSearchEndpoint(sharedMetadata: EndpointSharedMetadata(),
                                            searchKeyword: searchKeyword)
         
         networkRouter.request(endpoint: endpoint) { (data, response, error) in
             if error != nil {
-                completion(nil, error!.localizedDescription)
+                completion(nil, error)
             }
             
             if let response = response as? HTTPURLResponse {
                 let responseStatus = _networkResponseHandler.handleNetworkResponse(response)
                 switch responseStatus {
                 case .success:
-                    let procecssedResponse: (decodedInstance: ImageSearchResultModel?, message: String?) = _networkResponseHandler.decodeJsonData(data: data)
-                    completion(procecssedResponse.decodedInstance, procecssedResponse.message)
+                    let procecssedResponse: (decodedInstance: ImageSearchResultModel?, error: Error?) = _networkResponseHandler.decodeJsonData(data: data)
+                    completion(procecssedResponse.decodedInstance, procecssedResponse.error)
                 case .failure(let failureMessage):
                     completion(nil, failureMessage)
                 }

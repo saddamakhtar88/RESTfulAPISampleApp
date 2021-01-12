@@ -8,40 +8,40 @@
 import Foundation
 
 protocol NetworkResponseHandler {
-    func handleNetworkResponse(_ response: HTTPURLResponse) -> Result<String>
-    func decodeJsonData<Type: Decodable>(data: Data?) -> (decodedInstance: Type?, message: String?)
+    func handleNetworkResponse(_ response: HTTPURLResponse) -> Result<NetworkError>
+    func decodeJsonData<Type: Decodable>(data: Data?) -> (decodedInstance: Type?, error: Error?)
 }
 
-enum NetworkResponse:String {
+enum NetworkError:Error {
     case success
-    case authenticationError = "You need to be authenticated first."
-    case badRequest = "Bad request"
-    case outdated = "The url you requested is outdated."
-    case failed = "Network request failed."
-    case noData = "Response returned with no data to decode."
-    case unableToDecode = "We could not decode the response."
+    case authenticationError
+    case badRequest
+    case outdated
+    case failed
+    case noData
+    case unableToDecode
 }
 
-enum Result<String>{
+enum Result<NetworkError>{
     case success
-    case failure(String)
+    case failure(NetworkError)
 }
 
 struct HTTPResponseHandler: NetworkResponseHandler {
     
-    func handleNetworkResponse(_ response: HTTPURLResponse) -> Result<String> {
+    func handleNetworkResponse(_ response: HTTPURLResponse) -> Result<NetworkError> {
         switch response.statusCode {
         case 200...299: return .success
-        case 401...500: return .failure(NetworkResponse.authenticationError.rawValue)
-        case 501...599: return .failure(NetworkResponse.badRequest.rawValue)
-        case 600: return .failure(NetworkResponse.outdated.rawValue)
-        default: return .failure(NetworkResponse.failed.rawValue)
+        case 401...500: return .failure(NetworkError.authenticationError)
+        case 501...599: return .failure(NetworkError.badRequest)
+        case 600: return .failure(NetworkError.outdated)
+        default: return .failure(NetworkError.failed)
         }
     }
     
-    func decodeJsonData<Type: Decodable>(data: Data?) -> (decodedInstance: Type?, message: String?) {
+    func decodeJsonData<Type: Decodable>(data: Data?) -> (decodedInstance: Type?, error: Error?) {
         guard let responseData = data else {
-            return (nil, NetworkResponse.noData.rawValue)
+            return (nil, NetworkError.noData)
         }
         
         do {
@@ -49,7 +49,7 @@ struct HTTPResponseHandler: NetworkResponseHandler {
             return (decodedResponse, nil)
         }
         catch {
-            return (nil, NetworkResponse.unableToDecode.rawValue)
+            return (nil, NetworkError.unableToDecode)
         }
     }
 }
