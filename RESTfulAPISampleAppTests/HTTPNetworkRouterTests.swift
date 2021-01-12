@@ -9,35 +9,24 @@ import XCTest
 @testable import RESTfulAPISampleApp
 
 class ImageSearchNetworkServiceTests: XCTestCase {
-
-    var imageSearchNetworkService: ImageSearchNetworkService!
     
     override func setUpWithError() throws {
-        DI.reset()
-        
         DI.register { () -> Environment in Development() }
-        DI.register { () -> NetworkRouter in NetworkRouterMock() }
-        DI.register { () -> NetworkResponseHandler in NetworkResponseHandlerMock() }
-        
-        NetworkRouterMock.reset()
-        NetworkResponseHandlerMock.reset()
-        
-        imageSearchNetworkService = ImageSearchNetworkService()
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        DI.reset()
     }
 
     func testGetImagesNetworkError() throws {
-        NetworkRouterMock.error = NetworkError.failed
-        NetworkResponseHandlerMock.handledResponse = .failure(.badRequest)
+        // Scenario setup
+        DI.register { () -> NetworkRouter in NetworkRouterMock(error: NetworkError.failed) }
+        DI.register { () -> NetworkResponseHandler in NetworkResponseHandlerMock() }
         
+        // Execution and assertion
         let expectation = XCTestExpectation(description: "network error")
-        _ = imageSearchNetworkService.getImages(for: "test-data") { (result, error) in
-            
-            XCTAssert(error is NetworkError)
-            
+        _ = ImageSearchNetworkService().getImages(for: "test-data") { (result, error) in
+            XCTAssert(error is NetworkError, "Expected error of type NetworkError")
             expectation.fulfill()
         }
         
@@ -45,14 +34,36 @@ class ImageSearchNetworkServiceTests: XCTestCase {
     }
     
     func testGetImagesResponseError() throws {
-        NetworkResponseHandlerMock.handledResponse = .failure(.badRequest)
+        // Scenario setup
+        DI.register { () -> NetworkRouter in NetworkRouterMock() }
+        DI.register { () -> NetworkResponseHandler in
+            NetworkResponseHandlerMock(handledResponse: .failure(.badRequest))
+        }
         
+        // Execution and assertion
         let expectation = XCTestExpectation(description: "response error")
-        _ = imageSearchNetworkService.getImages(for: "test-data") { (result, error) in
-            
+        _ = ImageSearchNetworkService().getImages(for: "test-data") { (result, error) in
             XCTAssertNil(result)
-            XCTAssert(error is NetworkError)
-            
+            XCTAssert(error is NetworkError, "Expected error of type NetworkError")
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 2.0)
+    }
+    
+    func testGetImagesResponseDecodeError() throws {
+        // Scenario setup
+        DI.register { () -> NetworkRouter in NetworkRouterMock() }
+        DI.register { () -> NetworkResponseHandler in
+            NetworkResponseHandlerMock(handledResponse: .success,
+                                       decodedData: (nil, NetworkError.unableToDecode))
+        }
+        
+        // Execution and assertion
+        let expectation = XCTestExpectation(description: "decoding error")
+        _ = ImageSearchNetworkService().getImages(for: "test-data") { (result, error) in
+            XCTAssertNil(result)
+            XCTAssert(error is NetworkError, "Expected error of type NetworkError")
             expectation.fulfill()
         }
         
@@ -60,15 +71,18 @@ class ImageSearchNetworkServiceTests: XCTestCase {
     }
     
     func testGetImagesSuccess() throws {
-        NetworkResponseHandlerMock.handledResponse = .success
-        NetworkResponseHandlerMock.decodedData = (ImageSearchResultModel(), nil)
+        // Scenario setup
+        DI.register { () -> NetworkRouter in NetworkRouterMock() }
+        DI.register { () -> NetworkResponseHandler in
+            NetworkResponseHandlerMock(handledResponse: .success,
+                                       decodedData: (ImageSearchResultModel(), nil))
+        }
         
+        // Execution and assertion
         let expectation = XCTestExpectation(description: "returns data")
-        _ = imageSearchNetworkService.getImages(for: "test-data") { (result, error) in
-            
+        _ = ImageSearchNetworkService().getImages(for: "test-data") { (result, error) in
             XCTAssertNotNil(result)
             XCTAssertNil(error)
-            
             expectation.fulfill()
         }
         

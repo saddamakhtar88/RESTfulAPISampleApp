@@ -10,21 +10,22 @@ import Foundation
 
 struct NetworkResponseHandlerMock: NetworkResponseHandler {
     
-    static var decodedData: (decodedInstance: Any?, error: Error?) = (nil, nil)
-    static var handledResponse = Result<NetworkError>.success
+    var decodedData: (decodedInstance: Any?, error: Error?) = (nil, nil)
+    var handledResponse = Result<NetworkError>.success
+    
+    init(handledResponse: Result<NetworkError> = Result<NetworkError>.success,
+         decodedData: (decodedInstance: Any?, error: Error?) = (nil, nil)) {
+        self.decodedData = decodedData
+        self.handledResponse = handledResponse
+    }
     
     func handleNetworkResponse(_ response: URLResponse?) -> Result<NetworkError> {
-        NetworkResponseHandlerMock.handledResponse
+        handledResponse
     }
     
     func decodeJsonData<Type>(data: Data?) -> (decodedInstance: Type?,
                                                error: Error?) where Type : Decodable {
-        (NetworkResponseHandlerMock.decodedData.decodedInstance as? Type,
-         NetworkResponseHandlerMock.decodedData.error)
-    }
-    
-    static func reset() {
-        NetworkResponseHandlerMock.decodedData = (nil, nil)
-        NetworkResponseHandlerMock.handledResponse = Result<NetworkError>.success
+        (decodedData.decodedInstance as? Type,
+         decodedData.error)
     }
 }

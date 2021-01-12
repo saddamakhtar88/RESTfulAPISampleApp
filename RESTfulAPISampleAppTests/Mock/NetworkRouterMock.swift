@@ -10,25 +10,27 @@ import Foundation
 
 class NetworkRouterMock: NetworkRouter {
     
-    static var data: Data?
-    static var response: URLResponse?
-    static var error: Error?
+    var data: Data?
+    var response: URLResponse?
+    var error: Error?
+    var isCancelled = false
     
-    static var isCancelled = false
+    init(data: Data? = nil,
+         response: URLResponse? = nil,
+         error: Error? = nil,
+         cancelled: Bool = false) {
+        self.data = data
+        self.response = response
+        self.error = error
+        self.isCancelled = cancelled
+    }
     
     func request(endpoint: HTTPEndpoint, completion: @escaping NetworkRequestCompletion) {
-        NetworkRouterMock.isCancelled = false
-        completion(NetworkRouterMock.data, NetworkRouterMock.response, NetworkRouterMock.error)
+        isCancelled = false
+        completion(data, response, error)
     }
     
     func cancel() {
-        NetworkRouterMock.isCancelled = true
-    }
-    
-    static func reset() {
-        NetworkRouterMock.isCancelled = false
-        NetworkRouterMock.data = nil
-        NetworkRouterMock.response = nil
-        NetworkRouterMock.error = nil
+        isCancelled = true
     }
 }
