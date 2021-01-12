@@ -8,7 +8,7 @@
 import Foundation
 
 protocol NetworkResponseHandler {
-    func handleNetworkResponse(_ response: HTTPURLResponse) -> Result<NetworkError>
+    func handleNetworkResponse(_ response: URLResponse?) -> Result<NetworkError>
     func decodeJsonData<Type: Decodable>(data: Data?) -> (decodedInstance: Type?, error: Error?)
 }
 
@@ -29,8 +29,12 @@ enum Result<NetworkError>{
 
 struct HTTPResponseHandler: NetworkResponseHandler {
     
-    func handleNetworkResponse(_ response: HTTPURLResponse) -> Result<NetworkError> {
-        switch response.statusCode {
+    func handleNetworkResponse(_ response: URLResponse?) -> Result<NetworkError> {
+        guard let httpResponse = response as? HTTPURLResponse else {
+            return .failure(NetworkError.failed)
+        }
+        
+        switch httpResponse.statusCode {
         case 200...299: return .success
         case 401...500: return .failure(NetworkError.authenticationError)
         case 501...599: return .failure(NetworkError.badRequest)

@@ -30,17 +30,13 @@ struct ImageSearchNetworkService: ImageSearchService {
                 completion(nil, error)
             }
             
-            if let response = response as? HTTPURLResponse {
-                let responseStatus = _networkResponseHandler.handleNetworkResponse(response)
-                switch responseStatus {
-                case .success:
-                    let procecssedResponse: (decodedInstance: ImageSearchResultModel?, error: Error?) = _networkResponseHandler.decodeJsonData(data: data)
-                    completion(procecssedResponse.decodedInstance, procecssedResponse.error)
-                case .failure(let failureMessage):
-                    completion(nil, failureMessage)
-                }
-            } else {
-                completion(nil, nil)
+            let responseStatus = _networkResponseHandler.handleNetworkResponse(response)
+            switch responseStatus {
+            case .success:
+                let procecssedResponse: (decodedInstance: ImageSearchResultModel?, error: Error?) = _networkResponseHandler.decodeJsonData(data: data)
+                completion(procecssedResponse.decodedInstance, procecssedResponse.error)
+            case .failure(let failureMessage):
+                completion(nil, failureMessage)
             }
         }
         
