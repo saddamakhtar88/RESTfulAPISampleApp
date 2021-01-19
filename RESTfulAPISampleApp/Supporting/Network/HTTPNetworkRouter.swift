@@ -25,10 +25,10 @@ public class HTTPNetworkRouter: NetworkRouter {
     
     // MARK: - Public functions
     
-    public func request(endpoint: HTTPEndpoint, completion: @escaping NetworkRequestCompletion) {
+    public func request(endpoint: Endpoint, completion: @escaping NetworkRequestCompletion) {
         let session = _urlSession
         do {
-            let request = try urlRequest(from: endpoint)
+            let request = try endpoint.urlRequest()
             _urlSessionTask = session.dataTask(with: request, completionHandler: { data, response, error in
                 completion(data, response, error)
             })
@@ -40,39 +40,5 @@ public class HTTPNetworkRouter: NetworkRouter {
     
     public func cancel() {
         _urlSessionTask?.cancel()
-    }
-    
-    
-    // MARK: - Private functions
-    
-    private func urlRequest(from endpoint: HTTPEndpoint) throws -> URLRequest {
-        
-        var queryItems = [URLQueryItem]()
-        endpoint.queryParams.forEach { (key, value) in
-            queryItems.append(URLQueryItem(name: key, value: value))
-        }
-        
-        guard var urlComps = URLComponents(string: endpoint.url.absoluteString) else {
-            throw HTTPEndpointError.urlError("Cannot fetch URL components")
-        }
-        
-        urlComps.queryItems = queryItems
-        
-        guard let url = urlComps.url else {
-            throw HTTPEndpointError.urlError("Cannot fetch URL after queryItems are added")
-        }
-        
-        var request = URLRequest(url: url,
-                                 cachePolicy: endpoint.cachePolicy ?? _defaultCachePolicy,
-                                 timeoutInterval: endpoint.timeoutInterval ?? _defaultTimeoutInterval)
-        
-        request.httpMethod = endpoint.method.rawValue
-        request.httpBody = endpoint.body
-        
-        endpoint.headers.forEach({ (key, value) in
-            request.setValue(value, forHTTPHeaderField: key)
-        })
-        
-        return request
     }
 }

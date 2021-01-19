@@ -25,7 +25,7 @@ class NetworkRouterMock: NetworkRouter {
         self.isCancelled = cancelled
     }
     
-    func request(endpoint: HTTPEndpoint, completion: @escaping NetworkRequestCompletion) {
+    func request(endpoint: Endpoint, completion: @escaping NetworkRequestCompletion) {
         isCancelled = false
         completion(data, response, error)
     }

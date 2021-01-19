@@ -12,5 +12,10 @@ public typealias NetworkRequestCompletion = (_ data: Data?,
                                              _ error: Error?) -> Void
 
 protocol NetworkRouter: Cancellable {
-    func request(endpoint: HTTPEndpoint, completion: @escaping NetworkRequestCompletion)
+    func request(endpoint: Endpoint, completion: @escaping NetworkRequestCompletion)
 }
+
+public protocol Endpoint {
+    func urlRequest() throws -> URLRequest
+}
+
